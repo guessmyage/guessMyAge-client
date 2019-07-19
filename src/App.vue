@@ -1,8 +1,10 @@
 <template>
     <div>
+        <!-- belum login -->
         <div v-if="!isLogin">
             <form-gp @dataForm="changeLogin"></form-gp>
         </div>
+        <!-- udah login -->
         <div v-if="isLogin">
             <h1>udah login !</h1>
             <button @click="isLogin = false">LOGOUT</button>

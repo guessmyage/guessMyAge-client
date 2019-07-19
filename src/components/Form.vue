@@ -41,7 +41,7 @@ export default {
             if(this.optionForm === 'login'){
                 this.$emit('dataForm', this.form)   
             } else {
-
+                
             }
         },
         changeForm(form){
