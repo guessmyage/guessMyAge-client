@@ -4,9 +4,6 @@
             <landing-page @isLogin="changeLoginStatus"></landing-page>
         </div>
         <div v-if="isLogin">
-            <!-- <h1>logged in !</h1>
-            <button @click="signOut">logout</button>
-            <upload-files></upload-files> -->
             <home-page @isLogin="changeLoginStatus"></home-page>
         </div>
     </div>

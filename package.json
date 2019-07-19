@@ -23,6 +23,7 @@
     "vue": "^2.6.10",
     "vue-google-signin-button": "^1.0.4",
     "vue-hot-reload-api": "^2.3.3",
+    "vue-sweetalert2": "^2.1.1",
     "vue2-animate": "^2.1.0"
   },
   "devDependencies": {

@@ -5,18 +5,22 @@
         <button class="button" @click="$emit('isLogin', false)">LOG OUT</button>
       </div>
       <div id="homeContent" class="column">
-        <upload-file @image="image = $event"></upload-file>
-        <!-- <img :src="image" alt=""> -->
-        {{image}}
-        <!-- Sharingbutton Twitter -->
+        <upload-file @image="getFile"></upload-file>
+
+        <img v-if="image" :src="image" alt style="max-height:50%; border: darkgreen 5px solid;" />
+
+        <!-- form submit guess age -->
         <form @submit.prevent="lockAge">
-            <input v-if="!isLock" type="number" v-model="guessAge">
-            <input v-if="isLock" type="number" :value="guessAge" disabled>
-            <input type="submit" value="LOCK my guess !">
+          <b-field>
+            <b-input v-model="guessAge" v-if="!isLock" placeholder="Number" type="number" min="0" max="100"></b-input>
+            <b-input v-model="guessAge" v-if="isLock" placeholder="Number" type="number" min="0" max="100" disabled></b-input>
+          </b-field>
+          <input class="button is-small" type="submit" value="LOCK AND GUESS !" />
         </form>
+        <!-- Sharingbutton Twitter -->
         <a
           class="resp-sharing-button__link"
-          href="https://twitter.com/intent/tweet/?text=i%20have%20play%20guess%20age%20on%20GUESS%20MY%20AGE%20app."
+          :href="refTwitter"
           target="_blank"
           rel="noopener"
           aria-label="Share on Twitter"
@@ -50,14 +54,45 @@ export default {
   data() {
     return {
       image: "",
+      data_alternate: "",
+      data_real: "",
       isLock: false,
-      guessAge: 0
+      guessAge: 0,
+      refTwitter : "https://twitter.com/intent/tweet/?text=i%20have%20play%20guess%20age%20on%20GUESS%20MY%20AGE%20app."
     };
   },
   methods: {
-      lockAge(){
-          this.isLock = !this.isLock
+    lockAge() {
+      if (!this.isLock) {
+        console.log('this.data_real[0].faceAttributes.age: ', this.data_real[0].faceAttributes.age);
+          console.log('this.guessAge: ', this.guessAge);
+        if(Number(this.guessAge) === this.data_real[0].faceAttributes.age){
+          // this.$swal(`answer: ${this.data_real[0].faceAttributes.age} congrats`);
+          this.$swal({
+            title: 'CONGRATS !',
+            text: `the answer is: ${this.data_real[0].faceAttributes.age}`,
+            type: 'success'
+          });
+        } else {
+          // this.$swal(`answer: ${this.data_real[0].faceAttributes.age} sorry`);
+          this.$swal({
+            title: 'SORRY :(',
+            text: `the answer is: ${this.data_real[0].faceAttributes.age}`,
+            type: 'error'
+          });
+        }
       }
+      this.isLock = !this.isLock;
+    },
+    getFile(value) {
+      console.log('value: ', value);
+      this.image = value.image;
+      this.data_real = value.data;
+      let ageData = `age:${value.data[0].faceAttributes.age}`
+      console.log('ageData: ', ageData);
+      this.refTwitter += `${value.image} ${ageData}`
+      // debugger
+    }
   }
 };
 </script>
@@ -72,9 +107,9 @@ export default {
   background-size: 30%;
   height: 102vh;
 }
-.column {
-  border: 1px solid red;
-}
+/* .column { */
+/* border: 1px solid red; */
+/* } */
 #homeLeft {
   display: flex;
   align-items: center;
@@ -97,138 +132,141 @@ export default {
 }
 .resp-sharing-button__link,
 .resp-sharing-button__icon {
-  display: inline-block
+  display: inline-block;
 }
 
 .resp-sharing-button__link {
   text-decoration: none;
   color: #fff;
-  margin: 0.5em
+  margin: 0.5em;
 }
 
 .resp-sharing-button {
   border-radius: 5px;
   transition: 25ms ease-out;
   padding: 0.5em 0.75em;
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 .resp-sharing-button__icon svg {
   width: 1em;
   height: 1em;
   margin-right: 0.4em;
-  vertical-align: top
+  vertical-align: top;
 }
 
 .resp-sharing-button--small svg {
   margin: 0;
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 /* Non solid icons get a stroke */
 .resp-sharing-button__icon {
   stroke: #fff;
-  fill: none
+  fill: none;
 }
 
 /* Solid icons get a fill */
 .resp-sharing-button__icon--solid,
 .resp-sharing-button__icon--solidcircle {
   fill: #fff;
-  stroke: none
+  stroke: none;
 }
 
 .resp-sharing-button--twitter {
-  background-color: #55acee
+  background-color: #55acee;
 }
 
 .resp-sharing-button--twitter:hover {
-  background-color: #2795e9
+  background-color: #2795e9;
 }
 
 .resp-sharing-button--pinterest {
-  background-color: #bd081c
+  background-color: #bd081c;
 }
 
 .resp-sharing-button--pinterest:hover {
-  background-color: #8c0615
+  background-color: #8c0615;
 }
 
 .resp-sharing-button--facebook {
-  background-color: #3b5998
+  background-color: #3b5998;
 }
 
 .resp-sharing-button--facebook:hover {
-  background-color: #2d4373
+  background-color: #2d4373;
 }
 
 .resp-sharing-button--tumblr {
-  background-color: #35465C
+  background-color: #35465c;
 }
 
 .resp-sharing-button--tumblr:hover {
-  background-color: #222d3c
+  background-color: #222d3c;
 }
 
 .resp-sharing-button--reddit {
-  background-color: #5f99cf
+  background-color: #5f99cf;
 }
 
 .resp-sharing-button--reddit:hover {
-  background-color: #3a80c1
+  background-color: #3a80c1;
 }
 
 .resp-sharing-button--google {
-  background-color: #dd4b39
+  background-color: #dd4b39;
 }
 
 .resp-sharing-button--google:hover {
-  background-color: #c23321
+  background-color: #c23321;
 }
 
 .resp-sharing-button--linkedin {
-  background-color: #0077b5
+  background-color: #0077b5;
 }
 
 .resp-sharing-button--linkedin:hover {
-  background-color: #046293
+  background-color: #046293;
 }
 
 .resp-sharing-button--email {
-  background-color: #777
+  background-color: #777;
 }
 
 .resp-sharing-button--email:hover {
-  background-color: #5e5e5e
+  background-color: #5e5e5e;
 }
 
 .resp-sharing-button--xing {
-  background-color: #1a7576
+  background-color: #1a7576;
 }
 
 .resp-sharing-button--xing:hover {
-  background-color: #114c4c
+  background-color: #114c4c;
 }
 
 .resp-sharing-button--whatsapp {
-  background-color: #25D366
+  background-color: #25d366;
 }
 
 .resp-sharing-button--whatsapp:hover {
-  background-color: #1da851
+  background-color: #1da851;
 }
 
 .resp-sharing-button--hackernews {
-background-color: #FF6600
+  background-color: #ff6600;
 }
-.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {   background-color: #FB6200 }
+.resp-sharing-button--hackernews:hover,
+.resp-sharing-button--hackernews:focus {
+  background-color: #fb6200;
+}
 
 .resp-sharing-button--vk {
-  background-color: #507299
+  background-color: #507299;
 }
 
 .resp-sharing-button--vk:hover {
-  background-color: #43648c
+  background-color: #43648c;
 }
 
 .resp-sharing-button--twitter {
@@ -241,6 +279,4 @@ background-color: #FF6600
   background-color: #2795e9;
   border-color: #2795e9;
 }
-
-
 </style>
