@@ -6,9 +6,8 @@
         </div>
         <!-- udah login -->
         <div v-if="isLogin">
-            <h1>udah login !</h1>
             <button @click="isLogin = false">LOGOUT</button>
-            <show-pass :dataLogin="dataLogin" ></show-pass>
+            <show-pass @nama="method" :arrayArticles="arrayArticles"></show-pass>
         </div>
     </div>
 </template>
@@ -26,7 +25,8 @@ export default {
     data(){
         return {
             isLogin : localStorage.getItem('token') ? true : false,
-            dataLogin : ''
+            dataLogin : '',
+            arrayArticles: []
         }
     },
     methods: {
@@ -34,12 +34,29 @@ export default {
             this.dataLogin = value
             localStorage.setItem('token', value.username)
             this.isLogin = true
+        },
+        getAllarticles(){
+            this.arrayArticles = [{
+                id: 1,
+                title : 'A',
+                desc: 'a'
+            },
+            {
+                id: 2,
+                title : 'B',
+                desc: 'b'
+            }]
         }
+    }, 
+    created(){
+        this.getAllarticles()
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+}
 
 </style>

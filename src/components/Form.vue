@@ -37,6 +37,7 @@ export default {
     },
     methods: {
         submitForm(){
+            //axios
             console.log(this.form);
             if(this.optionForm === 'login'){
                 this.$emit('dataForm', this.form)   

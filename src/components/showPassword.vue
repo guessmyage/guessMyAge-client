@@ -1,12 +1,19 @@
 <template>
     <div>
-        <h1>{{dataLogin.username}} - {{dataLogin.password}}</h1>
+        {{arrayArticles}}
+        <card v-for="(article, i) in arrayArticles" :key="i" :article="article"></card>
     </div>
 </template>
 
 <script>
+
+import card from './cardArticle.vue'
+
 export default {
-    props : ["dataLogin"],
+    props : ["arrayArticles"],
+    components: {
+        card
+    }
 }
 </script>
 
